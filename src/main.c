@@ -79,12 +79,12 @@ int
 main (int argc, char **argv)
 {
   GdkWindow *video_window_xwindow;
-  GtkWidget *window, *video_window, *text_widget, *box;
+  GtkWidget *window, *video_window, *info_widget, *box;
   GstElement *pipeline, *src, *sink;
   gulong embed_xid;
   GstStateChangeReturn sret;
 
-  GtkTextBuffer *text;
+  GtkTextBuffer *info_text;
   gchar *str, *total_str;
 
   gst_init (&argc, &argv);
@@ -106,20 +106,20 @@ main (int argc, char **argv)
   /* prepare the ui */
   window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   g_signal_connect (G_OBJECT (window), "delete-event", G_CALLBACK (window_closed), (gpointer) pipeline);
-  gtk_window_set_default_size (GTK_WINDOW (window), 960, 720);
+  //gtk_window_set_default_size (GTK_WINDOW (window), 960, 720);
   gtk_window_set_title (GTK_WINDOW (window), "rknn_ai_demo");
 
-  text_widget = gtk_text_view_new ();
-  text = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text_widget));
+  info_widget = gtk_text_view_new ();
+  info_text = gtk_text_view_get_buffer (GTK_TEXT_VIEW (info_widget));
   total_str = g_strdup_printf ("rknn ai result:   \n");
-  gtk_text_buffer_insert_at_cursor (text, total_str, -1);
+  gtk_text_buffer_insert_at_cursor (info_text, total_str, -1);
   g_free (total_str);
 
   video_window = gtk_drawing_area_new ();
-  gtk_container_set_border_width (GTK_CONTAINER (window), 16);
-  box = gtk_hbox_new (FALSE, 0);
+
+  box = gtk_vbox_new (FALSE, 0);
   gtk_box_pack_start (GTK_BOX (box), video_window, TRUE, TRUE, 0);
-  gtk_box_pack_start (GTK_BOX (box), text_widget, TRUE, TRUE, 2);
+  gtk_box_pack_start (GTK_BOX (box), info_widget, FALSE, FALSE, 0);
   gtk_container_add (GTK_CONTAINER (window), box);
   gtk_widget_show_all (window);
 
