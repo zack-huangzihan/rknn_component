@@ -12,11 +12,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 find_package(PkgConfig REQUIRED)
 #pkg_search_module(GTK2 REQUIRED gtk+-2.0)
 pkg_search_module(GTK3 REQUIRED gtk+-3.0)
-pkg_search_module(GST REQUIRED gstreamer-video-1.0) #use gstreamer-video-1.0,It will contain gstreamer-1.0
+pkg_search_module(GST_VIDEO REQUIRED gstreamer-video-1.0) #use gstreamer-video-1.0,It will contain gstreamer-1.0
+pkg_search_module(GST_APP REQUIRED gstreamer-app-1.0)
 
 include_directories(${GTK3_INCLUDE_DIRS})
-#include_directories(${GTK2_INCLUDE_DIRS})
-include_directories(${GST_INCLUDE_DIRS})
+include_directories(${GST_VIDEO_INCLUDE_DIRS})
+include_directories(${GST_APP_INCLUDE_DIRS})
 
 set(RKNN_AI_DEMO_SRC
       src/main.c
@@ -24,8 +25,18 @@ set(RKNN_AI_DEMO_SRC
 
 # RKNN_AI_DEMO
 add_executable(rknn_ai_demo ${RKNN_AI_DEMO_SRC})
+#add_executable(test src/test.c)
+
 target_link_libraries(rknn_ai_demo 
 	#${GTK2_LIBRARIES}
 	${GTK3_LIBRARIES}
-	${GST_LIBRARIES}
+	${GST_VIDEO_LIBRARIES}
+	${GST_APP_LIBRARIES}
 	)
+
+#target_link_libraries(test 
+	#${GTK2_LIBRARIES}
+#	${GTK3_LIBRARIES}
+#	${GST_VIDEO_LIBRARIES}
+#	${GST_APP_LIBRARIES}
+#	)
