@@ -15,23 +15,30 @@ pkg_search_module(GTK3 REQUIRED gtk+-3.0)
 pkg_search_module(GST_VIDEO REQUIRED gstreamer-video-1.0) #use gstreamer-video-1.0,It will contain gstreamer-1.0
 pkg_search_module(GST_APP REQUIRED gstreamer-app-1.0)
 
+link_directories(librknn_api/aarch64)
+
 include_directories(${GTK3_INCLUDE_DIRS})
 include_directories(${GST_VIDEO_INCLUDE_DIRS})
 include_directories(${GST_APP_INCLUDE_DIRS})
+include_directories(include)
 
 set(RKNN_AI_DEMO_SRC
-      src/main.c
+      src/rknn_camera.cc
+      src/rknn_mobilenet.cc
+      src/argc.cc
 	)
 
 # RKNN_AI_DEMO
-add_executable(rknn_ai_demo ${RKNN_AI_DEMO_SRC})
+add_executable(rknn_camera ${RKNN_AI_DEMO_SRC})
 #add_executable(test src/test.c)
 
-target_link_libraries(rknn_ai_demo 
+target_link_libraries(rknn_camera 
 	#${GTK2_LIBRARIES}
 	${GTK3_LIBRARIES}
 	${GST_VIDEO_LIBRARIES}
 	${GST_APP_LIBRARIES}
+	rknn_api
+	rknnrt
 	)
 
 #target_link_libraries(test 
